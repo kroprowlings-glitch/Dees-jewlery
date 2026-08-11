@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dees Website</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      background: #f7f9fc;
+      line-height: 1.6;
+    }
+    .container {
+      width: min(1100px, 90%);
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+    header {
+      background: #0f172a;
+      color: #fff;
+      padding: 3rem 0;
+    }
+    header h1 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      margin-bottom: 1rem;
+    }
+    header p {
+      max-width: 40rem;
+    }
+    .hero {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 3rem;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+      text-align: center;
+    }
+    .hero h2 {
+      margin-bottom: 1rem;
+    }
+    .button,
+    button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      padding: 0.9rem 1.8rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+    .button:hover,
+    button:hover {
+      background: #1d4ed8;
+    }
+    .commercial {
+      padding: 2rem 0 0;
+    }
+    .commercial-card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.06);
+    }
+    .commercial-card h2 {
+      margin-bottom: 1rem;
+    }
+    .commercial-card p {
+      color: #475569;
+      margin-bottom: 1rem;
+    }
+    .commercial-card ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .commercial-card li {
+      margin-bottom: 0.75rem;
+      position: relative;
+      padding-left: 1.4rem;
+    }
+    .commercial-card li:before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #2563eb;
+    }
+    .products {
+      padding: 3rem 0 0;
+    }
+    .products h2,
+    .models h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1.75rem;
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+      text-align: center;
+    }
+    .product-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .product-card h3 {
+      margin-bottom: 0.75rem;
+    }
+    .product-card p {
+      margin-bottom: 1.25rem;
+      color: #556987;
+    }
+    .product-card button {
+      width: 100%;
+      padding: 0.85rem;
+    }
+    .gallery {
+      padding: 3rem 0 0;
+    }
+    .gallery h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .gallery-card {
+      background: #fff;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+      text-align: center;
+    }
+    .gallery-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-card p {
+      padding: 1rem 1.25rem 1.5rem;
+      color: #475569;
+    }
+    .models {
+      padding: 3rem 0 0;
+    }
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .model-card {
+      background: #fff;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+    }
+    .model-card img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+    }
+    .model-card p {
+      padding: 1.25rem;
+      color: #475569;
+    }
+    .video-promo {
+      padding: 3rem 0 0;
+    }
+    .video-promo h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .video-wrapper {
+      max-width: 900px;
+      margin: 0 auto 1.5rem;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    }
+    .video-wrapper video {
+      width: 100%;
+      display: block;
+    }
+    .video-promo p {
+      text-align: center;
+      color: #475569;
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Dees Jewelry</h1>
+      <p>Discover necklaces and bracelets styled for every look.</p>
+    </div>
+  </header>
+  <main>
+    <section class="hero container">
+      <h2>Shine Bright in Every Moment</h2>
+      <p>From timeless necklaces to bold bracelets, find jewelry that brings polish and personality to every outfit.</p>
+      <a class="button" href="purchase.html">See the Collection</a>
+    </section>
+    <section class="commercial container">
+      <div class="commercial-card">
+        <h2>Short Commercial</h2>
+        <p>Discover the Dees Jewelry collection where craftsmanship meets modern style. Each piece is designed to feel luxurious, comfortable, and effortless—whether you’re dressing for a date night, a work meeting, or a weekend outing.</p>
+        <ul>
+          <li>Hand-finished details on every necklace and bracelet</li>
+          <li>Perfect for layering or wearing alone</li>
+          <li>Designed for everyday glamour and special moments</li>
+        </ul>
+      </div>
+    </section>
+    <section class="gallery container">
+      <h2>Featured Dees Jewelry</h2>
+      <div class="gallery-grid">
+        <article class="gallery-card">
+          <img src="images/494571299_582420598239098_916694685.jpg" alt="Dees jewelry photo 1" loading="lazy" />
+          <p>Elegant statement earrings with vivid color and sparkle.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/611195357_4267553866861447_27719705.jpg" alt="Dees jewelry photo 2" loading="lazy" />
+          <p>Delicate handcrafted details perfect for every occasion.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/685112055_1460077288925761_84513832.jpg" alt="Dees jewelry photo 3" loading="lazy" />
+          <p>Rock a bold look with bright textures and polished finishes.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/765007376_1738726027461446_55545600.jpg" alt="Dees jewelry photo 4" loading="lazy" />
+          <p>A refined design that blends glamour and everyday style.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/765338329_1540913820503670_27702638.jpg" alt="Dees jewelry photo 5" loading="lazy" />
+          <p>Color-rich accents that add a luxe edge to any outfit.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/766257626_1036343912323328_27188888.jpg" alt="Dees jewelry photo 6" loading="lazy" />
+          <p>Chic metallic details crafted for everyday wear.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/768307839_1330564488842369_66700691.jpg" alt="Dees jewelry photo 7" loading="lazy" />
+          <p>Bright stones and woven texture for a playful statement.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/769345444_1724267708851874_35626904.jpg" alt="Dees jewelry photo 8" loading="lazy" />
+          <p>Bold shapes and polished shine for a standout look.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/771939176_1241504934735374_82771839.jpg" alt="Dees jewelry photo 9" loading="lazy" />
+          <p>Refined embellishments with a modern vintage feel.</p>
+        </article>
+        <article class="gallery-card">
+          <img src="images/772602400_1392927962777430_15797315.jpg" alt="Dees jewelry photo 10" loading="lazy" />
+          <p>Luxurious color and detail that elevate every look.</p>
+        </article>
+      </div>
+    </section>
+    <section class="models container">
+      <h2>Models Wearing the Collection</h2>
+      <div class="model-grid">
+        <article class="model-card">
+          <img src="https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Model wearing necklace and bracelet" loading="lazy" />
+          <p><strong>Maya</strong> wears the Pearl Drop Necklace and Charm Bracelet for a soft, elegant look.</p>
+        </article>
+        <article class="model-card">
+          <img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Model wearing layered jewelry" loading="lazy" />
+          <p><strong>Leah</strong> layers the Gold Layered Necklace and Bangle Bracelet for a polished, modern outfit.</p>
+        </article>
+      </div>
+    </section>
+    <section class="video-promo container">
+      <h2>Watch the Dees Jewelry Video</h2>
+      <div class="video-wrapper">
+        <video controls muted loop poster="https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=800">
+          <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <p>Experience the collection in motion with a cinematic promo that highlights necklaces and bracelets in soft light, luxe textures, and modern styling.</p>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <p>© 2026 Dees Website</p>
+    </div>
+  </footer>
+</body>
+</html>

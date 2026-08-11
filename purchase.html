@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dees Jewelry Purchase</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      color: #111827;
+      line-height: 1.6;
+    }
+    .container {
+      width: min(1000px, 90%);
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+    header {
+      background: #0f172a;
+      color: #fff;
+      padding: 2.5rem 0;
+      text-align: center;
+    }
+    header h1 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      margin-bottom: 0.75rem;
+    }
+    header p {
+      max-width: 40rem;
+      margin: 0 auto;
+      color: #cbd5e1;
+    }
+    .breadcrumbs {
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      color: #475569;
+    }
+    .breadcrumbs a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .page-card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+    }
+    .page-card h2 {
+      margin-bottom: 1rem;
+    }
+    .page-card p {
+      color: #475569;
+      margin-bottom: 1.75rem;
+    }
+    .purchase-grid {
+      display: grid;
+      gap: 2rem;
+    }
+    .purchase-summary,
+    .purchase-form {
+      background: #f8fafc;
+      border-radius: 1rem;
+      padding: 1.75rem;
+      border: 1px solid #e2e8f0;
+    }
+    .purchase-summary h3,
+    .purchase-form h3 {
+      margin-bottom: 1rem;
+    }
+    .purchase-summary p {
+      margin-bottom: 0.75rem;
+      color: #334155;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+      display: grid;
+      gap: 0.5rem;
+    }
+    label {
+      font-weight: 600;
+      color: #0f172a;
+    }
+    select,
+    input {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.85rem;
+      background: #ffffff;
+      font-size: 1rem;
+      color: #111827;
+    }
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.85rem;
+      resize: vertical;
+      font-size: 1rem;
+      color: #111827;
+    }
+    .button-row,
+    .summary-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .button-row button,
+    .button-row a {
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      padding: 0.95rem 1.5rem;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .button-row button:hover,
+    .button-row a:hover {
+      background: #1d4ed8;
+    }
+    .note {
+      color: #475569;
+      font-size: 0.95rem;
+      margin-top: 1rem;
+    }
+    .order-total {
+      display: grid;
+      gap: 0.75rem;
+      padding: 1rem;
+      border-radius: 1rem;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+    }
+    .order-total span {
+      display: flex;
+      justify-content: space-between;
+      color: #334155;
+    }
+    .order-total strong {
+      color: #0f172a;
+    }
+    @media (min-width: 900px) {
+      .purchase-grid {
+        grid-template-columns: 1.5fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Dees Jewelry Checkout</h1>
+      <p>Complete your order with a secure M-Pesa payment request. This checkout page gathers your details and prepares the request.</p>
+    </div>
+  </header>
+  <main class="container">
+    <div class="breadcrumbs"><a href="index.html">Home</a> › Purchase</div>
+    <div class="page-card">
+      <h2>Purchase Details</h2>
+      <p>Choose one of our featured pieces, enter your delivery info, and proceed with the M-Pesa payment prompt.</p>
+      <div class="purchase-grid">
+        <section class="purchase-form">
+          <h3>Order Form</h3>
+          <div class="form-group">
+            <label for="productSelect">Select Product</label>
+            <select id="productSelect">
+              <option value="Pearl Drop Necklace|79">Pearl Drop Necklace — $79</option>
+              <option value="Gold Layered Necklace|92">Gold Layered Necklace — $92</option>
+              <option value="Charm Bracelet|56">Charm Bracelet — $56</option>
+              <option value="Bangle Bracelet|68">Bangle Bracelet — $68</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" min="1" value="1" />
+          </div>
+          <div class="form-group">
+            <label for="customerName">Full Name</label>
+            <input type="text" id="customerName" placeholder="Jane Doe" />
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">M-Pesa Phone Number</label>
+            <input type="tel" id="customerPhone" placeholder="2547XXXXXXXX" />
+          </div>
+          <div class="form-group">
+            <label for="customerAddress">Delivery Address</label>
+            <textarea id="customerAddress" placeholder="Enter your delivery address"></textarea>
+          </div>
+          <div class="button-row">
+            <button id="checkoutButton" type="button">Proceed to M-Pesa</button>
+            <a href="index.html">Back to Shop</a>
+          </div>
+          <p class="note">Note: This sample page simulates the checkout flow. Actual M-Pesa processing requires a backend integration with a payment gateway.</p>
+        </section>
+        <aside class="purchase-summary">
+          <h3>Order Summary</h3>
+          <div class="order-total">
+            <span>Selected item<span id="summaryProduct">Pearl Drop Necklace</span></span>
+            <span>Unit price<span id="summaryPrice">$79</span></span>
+            <span>Quantity<span id="summaryQuantity">1</span></span>
+            <span><strong>Total</strong><strong id="summaryTotal">$79</strong></span>
+          </div>
+          <p class="note">After you click “Proceed to M-Pesa,” the page will show the next step and phone prompt instructions.</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <script>
+    const productSelect = document.getElementById('productSelect');
+    const quantityInput = document.getElementById('quantity');
+    const summaryProduct = document.getElementById('summaryProduct');
+    const summaryPrice = document.getElementById('summaryPrice');
+    const summaryQuantity = document.getElementById('summaryQuantity');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const checkoutButton = document.getElementById('checkoutButton');
+
+    function updateSummary() {
+      const [name, price] = productSelect.value.split('|');
+      const quantity = Number(quantityInput.value) || 1;
+      const total = Number(price) * quantity;
+      summaryProduct.textContent = name;
+      summaryPrice.textContent = `$${price}`;
+      summaryQuantity.textContent = quantity;
+      summaryTotal.textContent = `$${total}`;
+    }
+
+    productSelect.addEventListener('change', updateSummary);
+    quantityInput.addEventListener('input', updateSummary);
+
+    checkoutButton.addEventListener('click', () => {
+      const name = document.getElementById('customerName').value.trim();
+      const phone = document.getElementById('customerPhone').value.trim();
+      const address = document.getElementById('customerAddress').value.trim();
+      const [productName, productPrice] = productSelect.value.split('|');
+      const quantity = Number(quantityInput.value) || 1;
+      const total = Number(productPrice) * quantity;
+
+      if (!name || !phone || !address) {
+        alert('Please fill in your name, phone number, and delivery address.');
+        return;
+      }
+
+      alert(
+        `Order ready:\n` +
+        `Product: ${productName}\n` +
+        `Quantity: ${quantity}\n` +
+        `Total: $${total}\n\n` +
+        `Please follow your M-Pesa prompt on the phone to complete payment.`
+      );
+    });
+
+    updateSummary();
+  </script>
+</body>
+</html>
