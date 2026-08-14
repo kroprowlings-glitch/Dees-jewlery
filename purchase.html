@@ -1,127 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dees Jewelry Purchase</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dees Jewelry — Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* styles omitted for brevity (same as previous) */
-    * { box-sizing: border-box; margin:0; padding:0 }
-    body { font-family: Arial, sans-serif; background: #f7f9fc; color:#111827 }
-    .container { width: min(1000px,90%); margin:0 auto; padding:2rem 0 }
-    header { background:#0f172a; color:#fff; padding:2.5rem 0; text-align:center }
-    .page-card { background:#fff; border-radius:1rem; padding:2rem }
-    .purchase-grid { display:grid; gap:2rem }
-    .purchase-summary, .purchase-form { background:#f8fafc; border-radius:1rem; padding:1.75rem }
-    .button-row { display:flex; gap:1rem }
-    button { background:#2563eb; color:#fff; padding:.95rem 1.5rem; border-radius:999px; border:none }
-    .note { color:#475569 }
+    :root { --bg:#f6f8fb; --card:#fff; --accent:#b76e79; --accent-2:#6b4f8a; --muted:#6b7280 }
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);margin:0;color:#0f172a}
+    .container{max-width:1000px;margin:40px auto;padding:24px}
+    .header{display:flex;align-items:center;gap:16px}
+    .brand{font-weight:700;font-size:1.4rem;color:var(--accent-2)}
+    .card{background:var(--card);border-radius:14px;padding:24px;box-shadow:0 8px 30px rgba(15,23,42,0.07)}
+
+    .grid{display:grid;grid-template-columns:1fr 380px;gap:24px}
+    .product-row{display:flex;gap:16px;align-items:center}
+    .thumb{width:96px;height:96px;border-radius:12px;background:linear-gradient(135deg,#fbe9ee,#efe6ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent-2)}
+    h1{margin:0 0 8px;font-size:1.25rem}
+    p.lead{margin:4px 0 18px;color:var(--muted)}
+
+    label{display:block;font-weight:600;margin-bottom:6px}
+    select,input,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #e6e9ef;background:#fff}
+    .row{display:flex;gap:12px}
+    .btn{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;padding:12px 18px;border-radius:999px;border:none;cursor:pointer;font-weight:600}
+    .secondary{background:#eef2ff;color:var(--accent-2);padding:10px 14px;border-radius:999px;border:none}
+    .muted{color:var(--muted);font-size:0.95rem}
+
+    .summary{background:#fbfbff;padding:18px;border-radius:12px;border:1px solid #eef2ff}
+    .summary h3{margin:0 0 8px}
+    .summary .line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #f0f4ff}
+    .total{font-size:1.1rem;font-weight:700}
+
+    .status{margin-top:12px;padding:12px;border-radius:8px;background:#fff3f3;color:#7a2b2b;border:1px solid #ffd6d6}
+
+    @media (max-width:880px){.grid{grid-template-columns:1fr}.header{flex-direction:column;align-items:flex-start}.thumb{width:80px;height:80px}}
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>Dees Jewelry Checkout</h1>
-      <p>Complete your order with a secure M-Pesa payment request.</p>
+  <div class="container">
+    <div class="header">
+      <div class="brand">Dees Jewelry</div>
+      <div class="muted">Secure checkout • Lipa Na M-Pesa</div>
     </div>
-  </header>
-  <main class="container">
-    <div class="page-card">
-      <h2>Purchase Details</h2>
-      <div class="purchase-grid">
-        <section class="purchase-form">
-          <h3>Order Form</h3>
-          <div>
-            <label for="productSelect">Select Product</label>
-            <select id="productSelect">
-              <option value="Pearl Drop Necklace|79">Pearl Drop Necklace — $79</option>
-              <option value="Gold Layered Necklace|92">Gold Layered Necklace — $92</option>
-              <option value="Charm Bracelet|56">Charm Bracelet — $56</option>
-              <option value="Bangle Bracelet|68">Bangle Bracelet — $68</option>
-            </select>
-          </div>
-          <div>
+
+    <div style="height:18px"></div>
+
+    <div class="card grid">
+      <div>
+        <h1>Checkout</h1>
+        <p class="lead">Choose your item, provide delivery details, and click the button to receive an M-Pesa prompt on your phone.</p>
+
+        <div style="margin-bottom:12px">
+          <label for="product">Product</label>
+          <select id="product">
+            <option value="Pearl Drop Necklace|79">Pearl Drop Necklace — $79</option>
+            <option value="Gold Layered Necklace|92">Gold Layered Necklace — $92</option>
+            <option value="Charm Bracelet|56">Charm Bracelet — $56</option>
+            <option value="Bangle Bracelet|68">Bangle Bracelet — $68</option>
+          </select>
+        </div>
+
+        <div class="row" style="margin-bottom:12px">
+          <div style="flex:1">
             <label for="quantity">Quantity</label>
-            <input type="number" id="quantity" min="1" value="1" />
+            <input id="quantity" type="number" min="1" value="1" />
           </div>
-          <div>
-            <label for="customerName">Full Name</label>
-            <input type="text" id="customerName" placeholder="Jane Doe" />
+          <div style="width:180px">
+            <label for="phone">M-Pesa Phone</label>
+            <input id="phone" type="tel" placeholder="07XXXXXXXX or 2547..." />
           </div>
-          <div>
-            <label for="customerPhone">M-Pesa Phone Number</label>
-            <input type="tel" id="customerPhone" placeholder="2547XXXXXXXX" />
-          </div>
-          <div>
-            <label for="customerAddress">Delivery Address</label>
-            <textarea id="customerAddress" placeholder="Enter your delivery address"></textarea>
-          </div>
-          <div class="button-row">
-            <button id="checkoutButton" type="button">Proceed to M-Pesa</button>
-          </div>
-          <p class="note">Note: This page will initiate an STK Push request via the backend.</p>
-          <div id="status" style="margin-top:1rem;color:#334155"></div>
-        </section>
-        <aside class="purchase-summary">
-          <h3>Order Summary</h3>
-          <div id="summary">Selected item: <span id="summaryProduct">Pearl Drop Necklace</span> — Total: <strong id="summaryTotal">$79</strong></div>
-          <p class="note">Send payment using the prompt on your phone after you click Proceed.</p>
-        </aside>
+        </div>
+
+        <div style="margin-bottom:12px">
+          <label for="name">Full name</label>
+          <input id="name" placeholder="Jane Doe" />
+        </div>
+
+        <div style="margin-bottom:12px">
+          <label for="address">Delivery address</label>
+          <textarea id="address" rows="3" placeholder="Street, City, Kenya"></textarea>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
+          <button id="payBtn" class="btn">Pay with M-Pesa</button>
+          <button id="copyBtn" class="secondary">Copy Merchant No.</button>
+          <div id="spinner" style="display:none;color:var(--muted)">Requesting prompt…</div>
+        </div>
+
+        <div id="status" style="margin-top:12px"></div>
       </div>
+
+      <aside>
+        <div class="summary">
+          <h3>Order summary</h3>
+          <div class="line"><div id="summaryProduct">Pearl Drop Necklace</div><div id="summaryPrice">$79</div></div>
+          <div class="line"><div>Quantity</div><div id="summaryQuantity">1</div></div>
+          <div class="line"><div class="total">Total</div><div class="total" id="summaryTotal">$79</div></div>
+
+          <div style="height:14px"></div>
+          <div class="muted">Merchant M-Pesa number:</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+            <div style="font-weight:700;color:var(--accent-2)" id="merchantNumber">0707469655</div>
+            <div class="muted" style="font-size:0.9rem">(Paybill / Till via Daraja)</div>
+          </div>
+
+          <div style="height:12px"></div>
+          <div class="muted">After you click Pay, you will receive an M-Pesa payment prompt. Accept the prompt to complete payment.</div>
+        </div>
+      </aside>
     </div>
-  </main>
+
+    <div style="height:20px"></div>
+
+    <div class="muted">Need help? contact us at <strong>0707469655</strong></div>
+  </div>
+
   <script>
-    const productSelect = document.getElementById('productSelect');
-    const quantityInput = document.getElementById('quantity');
+    const product = document.getElementById('product');
+    const quantity = document.getElementById('quantity');
     const summaryProduct = document.getElementById('summaryProduct');
+    const summaryPrice = document.getElementById('summaryPrice');
+    const summaryQuantity = document.getElementById('summaryQuantity');
     const summaryTotal = document.getElementById('summaryTotal');
-    const checkoutButton = document.getElementById('checkoutButton');
+    const payBtn = document.getElementById('payBtn');
     const statusDiv = document.getElementById('status');
+    const spinner = document.getElementById('spinner');
+    const merchantNumber = document.getElementById('merchantNumber').textContent.trim();
+    const copyBtn = document.getElementById('copyBtn');
 
     function updateSummary(){
-      const [name, price] = productSelect.value.split('|');
-      const quantity = Number(quantityInput.value) || 1;
+      const [name, price] = product.value.split('|');
+      const q = Number(quantity.value) || 1;
       summaryProduct.textContent = name;
-      summaryTotal.textContent = `$${Number(price) * quantity}`;
+      summaryPrice.textContent = `$${price}`;
+      summaryQuantity.textContent = q;
+      summaryTotal.textContent = `$${Number(price) * q}`;
     }
-    productSelect.addEventListener('change', updateSummary);
-    quantityInput.addEventListener('input', updateSummary);
+    product.addEventListener('change', updateSummary);
+    quantity.addEventListener('input', updateSummary);
 
-    checkoutButton.addEventListener('click', async () => {
-      statusDiv.textContent = '';
-      const name = document.getElementById('customerName').value.trim();
-      const phone = document.getElementById('customerPhone').value.trim();
-      const address = document.getElementById('customerAddress').value.trim();
-      const [productName, productPrice] = productSelect.value.split('|');
-      const quantity = Number(quantityInput.value) || 1;
-      const total = Number(productPrice) * quantity;
+    copyBtn.addEventListener('click', async () => {
+      try{ await navigator.clipboard.writeText(merchantNumber); alert('Merchant number copied'); }catch(e){ alert('Copy failed. Number: ' + merchantNumber) }
+    });
 
-      if (!name || !phone || !address) {
-        alert('Please fill in your name, phone number, and delivery address.');
-        return;
-      }
+    function normalizePhone(s){
+      let x = (s||'').trim(); x = x.replace(/[^0-9+]/g,''); if(x.startsWith('+')) x = x.slice(1); if(x.startsWith('0')) x = '254' + x.slice(1); if(x.startsWith('7')) x = '254' + x; return x;
+    }
 
-      statusDiv.textContent = 'Requesting M-Pesa prompt...';
+    payBtn.addEventListener('click', async () => {
+      statusDiv.innerHTML = '';
+      spinner.style.display = 'inline-block';
+      payBtn.disabled = true;
 
-      try {
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const [pname, pprice] = product.value.split('|');
+      const q = Number(quantity.value) || 1;
+      const total = Number(pprice) * q;
+
+      if(!name || !phone || !address){ alert('Please fill name, phone and address'); spinner.style.display='none'; payBtn.disabled=false; return }
+
+      const payload = {
+        amount: total,
+        phone: normalizePhone(phone),
+        orderId: `order-${Date.now()}`,
+        accountReference: pname,
+        description: `Payment for ${pname}`
+      };
+
+      try{
         const resp = await fetch('/api/stkpush', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            amount: total,
-            phone: phone,
-            orderId: `order-${Date.now()}`,
-            accountReference: productName,
-            description: `Payment for ${productName}`
-          })
+          method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
         });
-
         const data = await resp.json();
-        if (!resp.ok) throw new Error(data.error || JSON.stringify(data));
+        if(!resp.ok){ throw data; }
 
-        statusDiv.innerHTML = 'M-Pesa prompt sent. You should receive the STK push on your phone. If you don\'t receive it, check the server logs.';
-      } catch (err) {
-        statusDiv.textContent = 'Failed to initiate STK Push: ' + (err.message || err);
+        // Daraja responds with CheckoutRequestID and ResponseCode/Description; show friendly message
+        spinner.style.display = 'none'; payBtn.disabled = false;
+        statusDiv.innerHTML = `<div class="status">M-Pesa prompt sent — check your phone. Response: ${data.data && data.data.ResponseDescription ? data.data.ResponseDescription : 'Pending'}</div>`;
+      }catch(err){
+        spinner.style.display='none'; payBtn.disabled=false;
+        console.error('STK error', err);
+        const msg = err && err.details ? JSON.stringify(err.details) : (err && err.error) || (err.message) || JSON.stringify(err);
+        statusDiv.innerHTML = `<div class="status">Failed to send M-Pesa prompt: ${msg}</div>`;
       }
     });
 

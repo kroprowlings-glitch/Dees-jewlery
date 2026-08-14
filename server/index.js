@@ -1,4 +1,4 @@
-// Simple Express server to initiate M-Pesa STK Push (Daraja) and receive callbacks
+// Express server with static hosting, improved validation, phone normalization and better logging
 // Usage: copy .env.example to .env and fill values, then `npm install` and `npm start`.
 
 const express = require('express');
@@ -12,6 +12,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
 const CONSUMER_KEY = process.env.CONSUMER_KEY || '';
@@ -25,6 +26,10 @@ if (!CONSUMER_KEY || !CONSUMER_SECRET || !SHORTCODE || !PASSKEY || !CALLBACK_BAS
   console.warn('Warning: Some required environment variables are not set. See .env.example');
 }
 
+// Serve static site (purchase.html and assets) from repo root so frontend and backend share origin
+const STATIC_DIR = path.join(__dirname, '..');
+app.use(express.static(STATIC_DIR));
+
 // Simple token cache
 let tokenCache = { token: null, expiresAt: 0 };
 
@@ -32,17 +37,22 @@ async function getAccessToken() {
   const now = Date.now();
   if (tokenCache.token && tokenCache.expiresAt > now) return tokenCache.token;
 
-  const url = `${DAR_AJA_BASE}/oauth/v1/generate?grant_type=client_credentials`;
-  const auth = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString('base64');
+  try {
+    const url = `${DAR_AJA_BASE}/oauth/v1/generate?grant_type=client_credentials`;
+    const auth = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString('base64');
 
-  const res = await axios.get(url, {
-    headers: { Authorization: `Basic ${auth}` }
-  });
+    const res = await axios.get(url, {
+      headers: { Authorization: `Basic ${auth}` },
+      timeout: 10000
+    });
 
-  const token = res.data.access_token;
-  // Daraja tokens generally last for some minutes; cache for 50 minutes as a safe default
-  tokenCache = { token, expiresAt: now + 50 * 60 * 1000 };
-  return token;
+    const token = res.data.access_token;
+    tokenCache = { token, expiresAt: now + 50 * 60 * 1000 };
+    return token;
+  } catch (err) {
+    console.error('Failed to get Daraja access token:', err.response ? err.response.data : err.message);
+    throw err;
+  }
 }
 
 function timestamp() {
@@ -68,16 +78,40 @@ if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(TX_FILE)) fs.writeFileSync(TX_FILE, JSON.stringify({}), 'utf8');
 
 function saveTransaction(orderId, obj) {
-  const store = JSON.parse(fs.readFileSync(TX_FILE, 'utf8') || '{}');
-  store[orderId] = store[orderId] || [];
-  store[orderId].push(obj);
-  fs.writeFileSync(TX_FILE, JSON.stringify(store, null, 2));
+  try {
+    const store = JSON.parse(fs.readFileSync(TX_FILE, 'utf8') || '{}');
+    store[orderId] = store[orderId] || [];
+    store[orderId].push(obj);
+    fs.writeFileSync(TX_FILE, JSON.stringify(store, null, 2));
+  } catch (err) {
+    console.error('Failed to save transaction', err);
+  }
+}
+
+function normalizeKenyanPhone(input) {
+  // Accept formats: 07XXXXXXXX, 2547XXXXXXXX, +2547XXXXXXXX
+  if (!input) return '';
+  let s = input.trim();
+  s = s.replace(/[^0-9+]/g, '');
+  if (s.startsWith('+')) s = s.slice(1);
+  if (s.startsWith('0')) s = '254' + s.slice(1);
+  if (s.startsWith('7')) s = '254' + s;
+  return s; // e.g., 2547XXXXXXXX
 }
 
 app.post('/api/stkpush', async (req, res) => {
   // expected: { amount, phone, orderId, accountReference, description }
   const { amount, phone, orderId, accountReference, description } = req.body;
   if (!amount || !phone) return res.status(400).json({ error: 'amount and phone are required' });
+
+  const normalizedPhone = normalizeKenyanPhone(phone);
+  if (!/^2547\d{8}$/.test(normalizedPhone)) {
+    return res.status(400).json({ error: 'phone must be a Kenyan mobile number, e.g. 07XXXXXXXX or 2547XXXXXXXX' });
+  }
+
+  if (!CONSUMER_KEY || !CONSUMER_SECRET || !SHORTCODE || !PASSKEY || !CALLBACK_BASE) {
+    return res.status(500).json({ error: 'Server not configured with Daraja credentials. Check environment variables.' });
+  }
 
   try {
     const token = await getAccessToken();
@@ -90,9 +124,9 @@ app.post('/api/stkpush', async (req, res) => {
       Timestamp: ts,
       TransactionType: 'CustomerPayBillOnline',
       Amount: amount,
-      PartyA: phone, // customer phone number in format 2547XXXXXXXX
+      PartyA: normalizedPhone, // customer phone number in format 2547XXXXXXXX
       PartyB: SHORTCODE,
-      PhoneNumber: phone,
+      PhoneNumber: normalizedPhone,
       CallBackURL: `${CALLBACK_BASE.replace(/\/$/, '')}/api/mpesa/callback`,
       AccountReference: accountReference || (orderId || 'ORDER'),
       TransactionDesc: description || 'Payment for order'
@@ -100,16 +134,21 @@ app.post('/api/stkpush', async (req, res) => {
 
     const url = `${DAR_AJA_BASE}/mpesa/stkpush/v1/processrequest`;
     const resp = await axios.post(url, body, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
+      timeout: 15000
     });
 
     // store request
     saveTransaction(orderId || ('req-' + Date.now()), { type: 'stk_request', request: body, response: resp.data, ts: new Date().toISOString() });
 
+    console.log('STK Push requested:', (resp.data && resp.data.ResponseDescription) || resp.data);
     res.json({ ok: true, data: resp.data });
   } catch (err) {
     console.error('STK Push error', err.response ? err.response.data : err.message);
-    res.status(500).json({ error: 'STK Push failed', details: err.response ? err.response.data : err.message });
+    const details = err.response && err.response.data ? err.response.data : { message: err.message };
+    // persist error
+    saveTransaction(orderId || ('err-' + Date.now()), { type: 'stk_error', details, ts: new Date().toISOString() });
+    res.status(500).json({ error: 'STK Push failed', details });
   }
 });
 
@@ -121,7 +160,7 @@ app.post('/api/mpesa/callback', (req, res) => {
     const orderId = (body && body.Body && body.Body.stkCallback && body.Body.stkCallback.CheckoutRequestID) || `cb-${Date.now()}`;
     saveTransaction(orderId, { type: 'callback', body, ts: new Date().toISOString() });
 
-    // respond immediately 200 OK
+    // respond immediately 200 OK (Daraja expects HTTP 200)
     res.json({ ResultCode: 0, ResultDesc: 'Accepted' });
   } catch (err) {
     console.error('callback error', err);
@@ -135,7 +174,11 @@ app.get('/api/order/:id/status', (req, res) => {
   res.json({ id, entries: store[id] || [] });
 });
 
+// Health
+app.get('/api/health', (req, res) => res.json({ ok: true, darajaBase: DAR_AJA_BASE }));
+
 app.listen(PORT, () => {
   console.log(`M-Pesa backend listening on port ${PORT}`);
   console.log(`Daraja base URL: ${DAR_AJA_BASE}`);
+  console.log(`Serving static from ${STATIC_DIR}`);
 });
