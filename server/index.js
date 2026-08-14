@@ -99,6 +99,21 @@ function normalizeKenyanPhone(input) {
   return s; // e.g., 2547XXXXXXXX
 }
 
+// Diagnostic endpoint: attempt to fetch Daraja access token and return masked token or error details
+app.get('/api/token', async (req, res) => {
+  try {
+    if (!CONSUMER_KEY || !CONSUMER_SECRET) {
+      return res.status(500).json({ ok: false, error: 'Missing CONSUMER_KEY or CONSUMER_SECRET in environment' });
+    }
+    const token = await getAccessToken();
+    const masked = token ? `***${token.slice(-6)}` : null;
+    res.json({ ok: true, token: masked, expiresIn: tokenCache.expiresAt ? Math.max(0, tokenCache.expiresAt - Date.now()) : null });
+  } catch (err) {
+    const details = err.response && err.response.data ? err.response.data : { message: err.message };
+    res.status(500).json({ ok: false, error: 'Failed to get token', details });
+  }
+});
+
 app.post('/api/stkpush', async (req, res) => {
   // expected: { amount, phone, orderId, accountReference, description }
   const { amount, phone, orderId, accountReference, description } = req.body;
