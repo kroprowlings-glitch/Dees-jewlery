@@ -212,6 +212,7 @@
             <span><strong>Total</strong><strong id="summaryTotal">$79</strong></span>
           </div>
           <p class="note">After you click “Proceed to M-Pesa,” the page will show the next step and phone prompt instructions.</p>
+          <p class="note">Send payment to M-Pesa number: <strong>0707469655</strong></p>
         </aside>
       </div>
     </div>
@@ -224,6 +225,9 @@
     const summaryQuantity = document.getElementById('summaryQuantity');
     const summaryTotal = document.getElementById('summaryTotal');
     const checkoutButton = document.getElementById('checkoutButton');
+
+    // Merchant M-Pesa receiving number (as requested)
+    const merchantNumber = '0707469655';
 
     function updateSummary() {
       const [name, price] = productSelect.value.split('|');
@@ -256,7 +260,8 @@
         `Product: ${productName}\n` +
         `Quantity: ${quantity}\n` +
         `Total: $${total}\n\n` +
-        `Please follow your M-Pesa prompt on the phone to complete payment.`
+        `Please send payment via M-Pesa to: ${merchantNumber}\n` +
+        `Follow the M-Pesa prompt on your phone to complete payment.`
       );
     });
 
