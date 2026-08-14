@@ -1,0 +1,16 @@
+{
+  "name": "dees-jewelry-mpesa",
+  "version": "1.0.0",
+  "description": "Simple backend to integrate Safaricom Daraja STK Push for Dees Jewelry",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
