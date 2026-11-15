@@ -62,6 +62,43 @@
       display: grid;
       gap: 2rem;
     }
+    .catalog {
+      margin: 1.5rem 0 2rem;
+    }
+    .catalog h3 {
+      margin-bottom: 1rem;
+    }
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1rem;
+    }
+    .catalog-card {
+      display: grid;
+      align-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      background: #f8fafc;
+    }
+    .catalog-card p {
+      margin: 0;
+      color: #2563eb;
+      font-weight: 700;
+    }
+    .catalog-card button {
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      padding: 0.8rem 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .catalog-card button:hover {
+      background: #1d4ed8;
+    }
     .purchase-summary,
     .purchase-form {
       background: #f8fafc;
@@ -169,6 +206,27 @@
     <div class="page-card">
       <h2>Purchase Details</h2>
       <p>Choose one of our featured pieces, enter your delivery info, and proceed with the M-Pesa payment prompt.</p>
+      <section class="catalog" aria-labelledby="catalogHeading">
+        <h3 id="catalogHeading">Shop Featured Pieces</h3>
+        <div class="catalog-grid">
+          <article class="catalog-card">
+            <div><h4>Pearl Drop Necklace</h4><p>$79</p></div>
+            <button type="button" data-product="Pearl Drop Necklace|79" aria-label="Buy now: Pearl Drop Necklace for $79">Buy Now</button>
+          </article>
+          <article class="catalog-card">
+            <div><h4>Gold Layered Necklace</h4><p>$92</p></div>
+            <button type="button" data-product="Gold Layered Necklace|92" aria-label="Buy now: Gold Layered Necklace for $92">Buy Now</button>
+          </article>
+          <article class="catalog-card">
+            <div><h4>Charm Bracelet</h4><p>$56</p></div>
+            <button type="button" data-product="Charm Bracelet|56" aria-label="Buy now: Charm Bracelet for $56">Buy Now</button>
+          </article>
+          <article class="catalog-card">
+            <div><h4>Bangle Bracelet</h4><p>$68</p></div>
+            <button type="button" data-product="Bangle Bracelet|68" aria-label="Buy now: Bangle Bracelet for $68">Buy Now</button>
+          </article>
+        </div>
+      </section>
       <div class="purchase-grid">
         <section class="purchase-form">
           <h3>Order Form</h3>
@@ -224,6 +282,7 @@
     const summaryQuantity = document.getElementById('summaryQuantity');
     const summaryTotal = document.getElementById('summaryTotal');
     const checkoutButton = document.getElementById('checkoutButton');
+    const buyNowButtons = document.querySelectorAll('.catalog-card button');
 
     function updateSummary() {
       const [name, price] = productSelect.value.split('|');
@@ -237,6 +296,13 @@
 
     productSelect.addEventListener('change', updateSummary);
     quantityInput.addEventListener('input', updateSummary);
+    buyNowButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        productSelect.value = button.dataset.product;
+        updateSummary();
+        document.querySelector('.purchase-form').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
 
     checkoutButton.addEventListener('click', () => {
       const name = document.getElementById('customerName').value.trim();
